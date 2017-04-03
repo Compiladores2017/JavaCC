@@ -48,8 +48,15 @@ SKIP :
 SKIP:
 {
 	< "//" (~["\n"])* "\n" >
-|	< "/*" (~["*/"])* "*/" >
+|	< "/*" (~["*"])* "*/" >
+//|	< "/*"> : COMMENT
 }
+
+/*< COMMENT > SKIP:
+{
+	< "* /" > : DEFAULT
+| 	< ~[] >
+}*/
 
 // END OF LINE, delimitador de linha 
 TOKEN :
@@ -60,7 +67,7 @@ TOKEN :
 /*Letras e números*/
 TOKEN [ IGNORE_CASE ] :
 {
-	< LETRAS : [ "a"-"z" ] >
+	< LETRAS : [ "a"-"z", "A"-"Z" ] >
 |	< DIGITOS : [ "0"-"9" ] >
 }
 
@@ -163,7 +170,7 @@ TOKEN:
 void NUMERO():
 {}
 {
-  (< DIGITOS >)+ | (< DIGITOS >)+","(< DIGITOS >)+
+	< SEM_SINAL
 }
 
 //Variaveis aceitas
