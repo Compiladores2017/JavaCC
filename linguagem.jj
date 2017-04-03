@@ -1,0 +1,217 @@
+options
+{
+  static = false;
+  DEBUG_PARSER = true;
+  DEBUG_TOKEN_MANAGER = true;
+}
+
+PARSER_BEGIN(linguagem)
+
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
+
+public class linguagem
+{
+  public static void main(String args []) throws ParseException
+  {
+    try
+    {
+      System.out.println("Lendo arquivo fonte...");
+      FileInputStream fis = new FileInputStream(new File("..//JavaCC//src//fonte.txt"));
+      linguagem parser = new linguagem(fis);
+      parser.Start();
+      System.out.println("Arquivo fonte processado corretamente!");
+    }
+    catch (IOException e)
+    {
+      System.out.println("Falha ao abrir arquivo fonte.");
+      System.exit(0);
+    }
+  }
+}
+
+PARSER_END(linguagem)
+
+/*Pular*/
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\r\n"
+}
+
+SKIP:
+{
+	< "/*" (~["*/"])* "*/" >
+|	""//" (~["\n"])* "\n""
+}
+
+// END OF LINE, delimitador de linha 
+TOKEN :
+{
+  < EOL : ";" >
+}
+
+/*letras e numeros*/
+TOKEN [ IGNORE_CASE ] :
+{
+  < LETRAS : [ "a"-"z" ] >
+| < DIGITOS : [ "0"-"9" ] >
+}
+
+/*OPERACOES*/
+TOKEN :
+{
+  < OP_ARIT :
+    (
+      < MAIS >
+    | < MENOS >
+    | < MULTIPLICACAO >
+    | < DIVISAO >
+    ) >
+| < #MAIS : "+" >
+| < #MENOS : "-" >
+| < #MULTIPLICACAO : "*" >
+| < #DIVISAO : "/" >
+}
+
+TOKEN :
+{
+  < OP_REL :
+    (
+      < MAIOR >
+    | < MENOR >
+    | < IGUALDADE >
+    | < DIFERENTE >
+    ) >
+| < #MAIOR : ">" >
+| < #MENOR : "<" >
+| < #IGUALDADE : "==" >
+| < #DIFERENTE : "!=" >
+}
+
+TOKEN :
+{
+  < IGUAL : "=" >
+}
+
+//tipos de dados
+TOKEN :
+{
+  < TIPO :
+    (
+      < INT >
+    | < STRING >
+    | < FLOAT >
+    | < VOID >
+    ) >
+| < #INT : "int" >
+| < #STRING : "String" >
+| < #FLOAT : "float" >
+| < #VOID : "void" >
+}
+
+//definicao de inicio e fim de comentarios
+TOKEN :
+{
+	< PARENTESES_A : "(">
+|	< PARENTESES_F : ")">
+|	< CHAVES_A : "{">
+|	< CHAVES_F : "}"> 
+}
+
+//repeticao
+TOKEN :
+{
+	< FOR : "for" >
+| 
+  	< WHILE : "while" >
+}
+
+//decisao
+TOKEN:
+{
+  < IF : "if" >
+| < ELSE : "else" >
+| < SWITCH : "switch" >
+| < CASE : "case" >
+| < PADRAO : "default" >
+}
+
+void NUMERO():
+{}
+{
+  (< DIGITOS >)+ | (< DIGITOS >)+","(< DIGITOS >)+
+}
+
+void VARIAVEL():
+{}
+{
+	< LETRAS >(< LETRAS >| < DIGITOS >| "_")*
+}
+
+void COMANDO() :
+{}
+{
+	(WHILE() | ATRIBUICAO() | IF() | FOR())+
+}
+
+void WHILE() :
+{}
+{
+	<WHILE> <PARENTESES_A> EXP_BOOL() <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
+}
+
+void IF() :
+{}
+{
+ 	<IF> <PARENTESES_A> EXP_BOOL() <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
+ 	ELSE()
+}
+
+void ELSE() :
+{}
+{
+ 	<ELSE> <CHAVES_A> (COMANDO())+ <CHAVES_F>
+}
+
+void FOR():
+{}
+{
+  <FOR> <PARENTESES_A> (<DIGITOS>)+ <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
+}
+
+void ATRIBUICAO() :
+{}
+{
+	(VARIAVEL()<IGUAL>EXP_ARITMETICA()<EOL>)+
+}
+
+void EXP_BOOL() :
+{}
+{
+	EXP_ARITMETICA() <OP_REL> EXP_ARITMETICA()
+}
+
+void EXP_ARITMETICA() :
+{}
+{
+	(TERMO() (<OP_ARIT> TERMO())*)+
+}
+
+void TERMO() :
+{}
+{
+	(NUMERO() | VARIAVEL())
+}
+
+void Start() :
+{}
+{
+  /*(    < TIPO >< LITERALS >< EOL >  )+*/
+  < EOF >
+}
+
