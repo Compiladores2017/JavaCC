@@ -44,7 +44,7 @@ SKIP :
 }
 
 //Comentários em bloco e em linha
-//aqui nao tá funcionando por causa do ["*/"], o jj nao reconhece o */
+//aqui nao tá funcionando por causa do ["*/"], o jj nao reconhece o */ expressoes regulares
 SKIP:
 {
 	< "//" (~["\n"])* "\n" >
@@ -208,7 +208,6 @@ void FOR():
   <FOR> <PARENTESES_A> (<DIGITOS>)+ <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
 }
 
-////AQUI
 //Atribuir valor a uma variável
 void ATRIBUICAO() :
 {}
@@ -223,14 +222,13 @@ void EXP_BOOL() :
 	EXP_ARITMETICA() <OP_REL> EXP_ARITMETICA()
 }
 
-//
+//Operacoes aritmeticas
 void EXP_ARITMETICA() :
 {}
 {
 	((NUMERO()|VARIAVEL()) (<OP_ARIT> (NUMERO()|VARIAVEL()))*)+
 }
 
-////ATÉ AQUI
 //Declaração de variáveis - Ex: int var1;
 void DECLARACAO() :
 {}
