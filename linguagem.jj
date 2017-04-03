@@ -33,7 +33,7 @@ public class linguagem
 
 PARSER_END(linguagem)
 
-/*Pular*/
+//Caracteres para serem pulados
 SKIP :
 {
   " "
@@ -43,26 +43,28 @@ SKIP :
 | "\r\n"
 }
 
+//Comentários em bloco e em linha
+//aqui nao tá funcionando por causa do ["*/"], o jj nao reconhece o */
 SKIP:
 {
-	< "/*" (~["*/"])* "*/" >
-|	""//" (~["\n"])* "\n""
+	< "//" (~["\n"])* "\n" >
+|	< "/*" (~["*/"])* "*/" >
 }
 
 // END OF LINE, delimitador de linha 
 TOKEN :
 {
-  < EOL : ";" >
+	< EOL : ";" >
 }
 
-/*letras e numeros*/
+/*Letras e números*/
 TOKEN [ IGNORE_CASE ] :
 {
-  < LETRAS : [ "a"-"z" ] >
-| < DIGITOS : [ "0"-"9" ] >
+	< LETRAS : [ "a"-"z" ] >
+|	< DIGITOS : [ "0"-"9" ] >
 }
 
-/*OPERACOES*/
+/*Operadores Aritmeticos*/
 TOKEN :
 {
   < OP_ARIT :
@@ -72,12 +74,13 @@ TOKEN :
     | < MULTIPLICACAO >
     | < DIVISAO >
     ) >
-| < #MAIS : "+" >
-| < #MENOS : "-" >
-| < #MULTIPLICACAO : "*" >
-| < #DIVISAO : "/" >
+|	< #MAIS : "+" >
+|	< #MENOS : "-" >
+|	< #MULTIPLICACAO : "*" >
+|	< #DIVISAO : "/" >
 }
 
+/*Operadores Relacionais*/
 TOKEN :
 {
   < OP_REL :
@@ -87,18 +90,19 @@ TOKEN :
     | < IGUALDADE >
     | < DIFERENTE >
     ) >
-| < #MAIOR : ">" >
-| < #MENOR : "<" >
-| < #IGUALDADE : "==" >
-| < #DIFERENTE : "!=" >
+|	< #MAIOR : ">" >
+|	< #MENOR : "<" >
+|	< #IGUALDADE : "==" >
+|	< #DIFERENTE : "!=" >
 }
 
+//Igual
 TOKEN :
 {
-  < IGUAL : "=" >
+	< IGUAL : "=" >
 }
 
-//tipos de dados
+//Tipos de dados
 TOKEN :
 {
   < TIPO :
@@ -108,45 +112,61 @@ TOKEN :
     | < FLOAT >
     | < VOID >
     ) >
-| < #INT : "int" >
-| < #STRING : "String" >
-| < #FLOAT : "float" >
-| < #VOID : "void" >
+|	< #INT : "inteiro" >
+|	< #STRING : "texto" >
+|	< #FLOAT : "flutuante" >
+|	< #VOID : "vazio" >
 }
 
-//definicao de inicio e fim de comentarios
+//Caracteres usados na linguagem
 TOKEN :
 {
-	< PARENTESES_A : "(">
-|	< PARENTESES_F : ")">
-|	< CHAVES_A : "{">
-|	< CHAVES_F : "}"> 
+	< PARENTESES_A : "(" >
+|	< PARENTESES_F : ")" >
+|	< CHAVES_A : "{" >
+|	< CHAVES_F : "}" >
+|	< VIRGULA : "," >
 }
 
-//repeticao
+//Repeticao
 TOKEN :
 {
-	< FOR : "for" >
-| 
-  	< WHILE : "while" >
+	< FOR : "para" >
+|	< WHILE : "enquanto" >
 }
 
-//decisao
+//Decisao
 TOKEN:
 {
-  < IF : "if" >
-| < ELSE : "else" >
-| < SWITCH : "switch" >
-| < CASE : "case" >
-| < PADRAO : "default" >
+	< IF : "se" >
+|	< ELSE : "se nao" >
+|	< SWITCH : "switch" >
+|	< CASE : "caso" >
+|	< BREAK : "sair" >
+|	< PADRAO : "padrao" >
 }
 
+//Saida e Entrada de dados
+TOKEN:
+{
+ 	< PRINT : "mostrar">
+|	< GET : "obter" >
+}
+
+//Main
+TOKEN:
+{
+	< MAIN : "main" >
+}
+
+//Aceitando números com vírgula
 void NUMERO():
 {}
 {
   (< DIGITOS >)+ | (< DIGITOS >)+","(< DIGITOS >)+
 }
 
+//Variaveis aceitas
 void VARIAVEL():
 {}
 {
@@ -156,15 +176,17 @@ void VARIAVEL():
 void COMANDO() :
 {}
 {
-	(WHILE() | ATRIBUICAO() | IF() | FOR())+
+	(WHILE() | ATRIBUICAO() | IF() | FOR() | SWITCH() | FUNCAO() | PRINT() | GET() | DECLARACAO())+
 }
 
+//Repeticao enquanto
 void WHILE() :
 {}
 {
 	<WHILE> <PARENTESES_A> EXP_BOOL() <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
 }
 
+//Comando de decisao se
 void IF() :
 {}
 {
@@ -172,46 +194,101 @@ void IF() :
  	ELSE()
 }
 
+//Comando de decisao se nao
 void ELSE() :
 {}
 {
  	<ELSE> <CHAVES_A> (COMANDO())+ <CHAVES_F>
 }
 
+//Laço de repetição for
 void FOR():
 {}
 {
   <FOR> <PARENTESES_A> (<DIGITOS>)+ <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
 }
 
+////AQUI
+//Atribuir valor a uma variável
 void ATRIBUICAO() :
 {}
 {
 	(VARIAVEL()<IGUAL>EXP_ARITMETICA()<EOL>)+
 }
 
+//Verificação booleana
 void EXP_BOOL() :
 {}
 {
 	EXP_ARITMETICA() <OP_REL> EXP_ARITMETICA()
 }
 
+//
 void EXP_ARITMETICA() :
 {}
 {
-	(TERMO() (<OP_ARIT> TERMO())*)+
+	((NUMERO()|VARIAVEL()) (<OP_ARIT> (NUMERO()|VARIAVEL()))*)+
 }
 
-void TERMO() :
+////ATÉ AQUI
+//Declaração de variáveis - Ex: int var1;
+void DECLARACAO() :
 {}
 {
-	(NUMERO() | VARIAVEL())
+	<TIPO> VARIAVEL() <EOL>
 }
 
+//Saída de Dados
+void PRINT() :
+{}
+{
+	<PRINT> <PARENTESES_A> ( <LETRAS> | <DIGITOS> | VARIAVEL() )+ <PARENTESES_F> <EOL>
+}
+
+//Entrada de Dados
+void GET() :
+{}
+{
+	<GET> <PARENTESES_A> (VARIAVEL() | (VARIAVEL() (<VIRGULA> VARIAVEL())+)+) <PARENTESES_F> <EOL>
+}
+
+//Declaração de Função
+void FUNCAO() :
+{}
+{
+	<TIPO> VARIAVEL() <PARENTESES_A> ( <TIPO> VARIAVEL() )* <PARENTESES_F> <CHAVES_A> (COMANDO())* <CHAVES_F>
+}
+
+//Switch
+void SWITCH() :
+{}
+{
+	<SWITCH> <PARENTESES_A> VARIAVEL() <PARENTESES_F> <CHAVES_A> (CASE())+ PADRAO_SWITCH() <CHAVES_F>
+}
+
+//Case
+void CASE() :
+{}
+{
+	<CASE> <PARENTESES_A> (( <LETRAS> | <DIGITOS> )+ | VARIAVEL() ) <PARENTESES_F> <EOL> (COMANDO())+ <BREAK> <EOL>
+}
+
+//Padrao do switch
+void PADRAO_SWITCH():
+{}
+{
+	<PADRAO> (COMANDO())+
+}
+
+//Funcao principal
+void MAIN() :
+{}
+{
+	< MAIN > <CHAVES_A> (COMANDO())* <CHAVES_F>
+}
 void Start() :
 {}
 {
-  /*(    < TIPO >< LITERALS >< EOL >  )+*/
-  < EOF >
+	MAIN()< EOF >
 }
 
