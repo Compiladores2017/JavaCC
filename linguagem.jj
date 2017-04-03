@@ -44,11 +44,11 @@ SKIP :
 }
 
 //Comentários em bloco e em linha
-//aqui nao tá funcionando por causa do ["*/"], o jj nao reconhece o */ expressoes regulares
+//aqui nao tá funcionando por causa do ["*/"], ali é utilizado expressoes regulares e o parametro nao aceita 2 caracteres
 SKIP:
 {
 	< "//" (~["\n"])* "\n" >
-|	< "/*" (~["*"])* "*/" >
+|	< "/*" (~["*/"])* "*/" >
 //|	< "/*"> : COMMENT
 }
 
