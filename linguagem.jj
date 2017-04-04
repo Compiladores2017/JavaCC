@@ -41,22 +41,15 @@ SKIP :
 | "\n"
 | "\r"
 | "\r\n"
+| "/*" : COMMENT //quando encontra um /* vai para o estado comment que ignora tudo até achar um */
+| < "//" (~["\n"])* "\n" > // quando acha um // ignora tudo até achar um \n
 }
 
-//Comentários em bloco e em linha
-//aqui nao tá funcionando por causa do ["*/"], ali é utilizado expressoes regulares e o parametro nao aceita 2 caracteres
-SKIP:
+< COMMENT > SKIP:
 {
-	< "//" (~["\n"])* "\n" >
-|	< "/*" (~["*/"])* "*/" >
-//|	< "/*"> : COMMENT
-}
-
-/*< COMMENT > SKIP:
-{
-	< "* /" > : DEFAULT
+	< "*/" > : DEFAULT
 | 	< ~[] >
-}*/
+}
 
 // END OF LINE, delimitador de linha 
 TOKEN :
@@ -170,7 +163,7 @@ TOKEN:
 void NUMERO():
 {}
 {
-	< SEM_SINAL
+	< SEM_SINAL 
 }
 
 //Variaveis aceitas
