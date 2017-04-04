@@ -21,151 +21,40 @@ public class linguagem implements linguagemConstants {
     }
   }
 
-//Aceitando números com vírgula
-  final public void NUMERO() throws ParseException {
-    trace_call("NUMERO");
-    try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case DIGITOS:
-        label_1:
-        while (true) {
-          jj_consume_token(DIGITOS);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DIGITOS:
-            ;
-            break;
-          default:
-            jj_la1[0] = jj_gen;
-            break label_1;
-          }
-        }
-        break;
-        label_2:
-        while (true) {
-          jj_consume_token(DIGITOS);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DIGITOS:
-            ;
-            break;
-          default:
-            jj_la1[1] = jj_gen;
-            break label_2;
-          }
-        }
-        jj_consume_token(VIRGULA);
-        label_3:
-        while (true) {
-          jj_consume_token(DIGITOS);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DIGITOS:
-            ;
-            break;
-          default:
-            jj_la1[2] = jj_gen;
-            break label_3;
-          }
-        }
-        break;
-      default:
-        jj_la1[3] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } finally {
-      trace_return("NUMERO");
-    }
-  }
-
-//Variaveis aceitas
-  final public void VARIAVEL() throws ParseException {
-    trace_call("VARIAVEL");
-    try {
-      jj_consume_token(LETRAS);
-      label_4:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
-        case DIGITOS:
-        case 43:
-          ;
-          break;
-        default:
-          jj_la1[4] = jj_gen;
-          break label_4;
-        }
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
-          jj_consume_token(LETRAS);
-          break;
-        case DIGITOS:
-          jj_consume_token(DIGITOS);
-          break;
-        case 43:
-          jj_consume_token(43);
-          break;
-        default:
-          jj_la1[5] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-      }
-    } finally {
-      trace_return("VARIAVEL");
-    }
-  }
-
   final public void COMANDO() throws ParseException {
     trace_call("COMANDO");
     try {
-      label_5:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case WHILE:
-          WHILE();
-          break;
-        case LETRAS:
-          ATRIBUICAO();
-          break;
-        case IF:
-          IF();
-          break;
-        case FOR:
-          FOR();
-          break;
-        case SWITCH:
-          SWITCH();
-          break;
-        case TIPO:
-          FUNCAO();
-          break;
-        case PRINT:
-          PRINT();
-          break;
-        case GET:
-          GET();
-          break;
-          DECLARACAO();
-          break;
-        default:
-          jj_la1[6] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
-        case TIPO:
-        case FOR:
-        case WHILE:
-        case IF:
-        case SWITCH:
-        case PRINT:
-        case GET:
-          ;
-          break;
-        default:
-          jj_la1[7] = jj_gen;
-          break label_5;
-        }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case WHILE:
+        WHILE();
+        break;
+      case VARIAVEL:
+        ATRIBUICAO();
+        break;
+      case IF:
+        IF();
+        break;
+      case FOR:
+        FOR();
+        break;
+      case SWITCH:
+        SWITCH();
+        break;
+      case TIPO:
+        FUNCAO();
+        break;
+      case PRINT:
+        PRINT();
+        break;
+      case GET:
+        GET();
+        break;
+        DECLARACAO();
+        break;
+      default:
+        jj_la1[0] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
     } finally {
       trace_return("COMANDO");
@@ -181,11 +70,11 @@ public class linguagem implements linguagemConstants {
       EXP_BOOL();
       jj_consume_token(PARENTESES_F);
       jj_consume_token(CHAVES_A);
-      label_6:
+      label_1:
       while (true) {
         COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -196,8 +85,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[8] = jj_gen;
-          break label_6;
+          jj_la1[1] = jj_gen;
+          break label_1;
         }
       }
       jj_consume_token(CHAVES_F);
@@ -215,11 +104,11 @@ public class linguagem implements linguagemConstants {
       EXP_BOOL();
       jj_consume_token(PARENTESES_F);
       jj_consume_token(CHAVES_A);
-      label_7:
+      label_2:
       while (true) {
         COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -230,8 +119,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[9] = jj_gen;
-          break label_7;
+          jj_la1[2] = jj_gen;
+          break label_2;
         }
       }
       jj_consume_token(CHAVES_F);
@@ -247,11 +136,11 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(ELSE);
       jj_consume_token(CHAVES_A);
-      label_8:
+      label_3:
       while (true) {
         COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -262,8 +151,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[10] = jj_gen;
-          break label_8;
+          jj_la1[3] = jj_gen;
+          break label_3;
         }
       }
       jj_consume_token(CHAVES_F);
@@ -278,25 +167,25 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(FOR);
       jj_consume_token(PARENTESES_A);
-      label_9:
+      label_4:
       while (true) {
-        jj_consume_token(DIGITOS);
+        jj_consume_token(DIGITOS_SIGNED);
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DIGITOS:
+        case DIGITOS_SIGNED:
           ;
           break;
         default:
-          jj_la1[11] = jj_gen;
-          break label_9;
+          jj_la1[4] = jj_gen;
+          break label_4;
         }
       }
       jj_consume_token(PARENTESES_F);
       jj_consume_token(CHAVES_A);
-      label_10:
+      label_5:
       while (true) {
         COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -307,8 +196,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[12] = jj_gen;
-          break label_10;
+          jj_la1[5] = jj_gen;
+          break label_5;
         }
       }
       jj_consume_token(CHAVES_F);
@@ -317,24 +206,23 @@ public class linguagem implements linguagemConstants {
     }
   }
 
-////AQUI
 //Atribuir valor a uma variável
   final public void ATRIBUICAO() throws ParseException {
     trace_call("ATRIBUICAO");
     try {
-      label_11:
+      label_6:
       while (true) {
-        VARIAVEL();
+        jj_consume_token(VARIAVEL);
         jj_consume_token(IGUAL);
         EXP_ARITMETICA();
         jj_consume_token(EOL);
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
           ;
           break;
         default:
-          jj_la1[13] = jj_gen;
-          break label_11;
+          jj_la1[6] = jj_gen;
+          break label_6;
         }
       }
     } finally {
@@ -346,78 +234,100 @@ public class linguagem implements linguagemConstants {
   final public void EXP_BOOL() throws ParseException {
     trace_call("EXP_BOOL");
     try {
-      EXP_ARITMETICA();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case VARIAVEL:
+        jj_consume_token(VARIAVEL);
+        break;
+      case DIGITOS:
+        jj_consume_token(DIGITOS);
+        break;
+      case DIGITOS_FLUTUANTE:
+        jj_consume_token(DIGITOS_FLUTUANTE);
+        break;
+      case DIGITOS_SIGNED:
+        jj_consume_token(DIGITOS_SIGNED);
+        break;
+      default:
+        jj_la1[7] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       jj_consume_token(OP_REL);
-      EXP_ARITMETICA();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case VARIAVEL:
+        jj_consume_token(VARIAVEL);
+        break;
+      case DIGITOS:
+        jj_consume_token(DIGITOS);
+        break;
+      case DIGITOS_FLUTUANTE:
+        jj_consume_token(DIGITOS_FLUTUANTE);
+        break;
+      case DIGITOS_SIGNED:
+        jj_consume_token(DIGITOS_SIGNED);
+        break;
+      default:
+        jj_la1[8] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
     } finally {
       trace_return("EXP_BOOL");
     }
   }
 
-//
+//Operacoes aritmeticas
   final public void EXP_ARITMETICA() throws ParseException {
     trace_call("EXP_ARITMETICA");
     try {
-      label_12:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case DIGITOS:
-          NUMERO();
-          break;
-        case LETRAS:
-          VARIAVEL();
-          break;
-        default:
-          jj_la1[14] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        label_13:
-        while (true) {
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case OP_ARIT:
-            ;
-            break;
-          default:
-            jj_la1[15] = jj_gen;
-            break label_13;
-          }
-          jj_consume_token(OP_ARIT);
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case DIGITOS:
-            NUMERO();
-            break;
-          case LETRAS:
-            VARIAVEL();
-            break;
-          default:
-            jj_la1[16] = jj_gen;
-            jj_consume_token(-1);
-            throw new ParseException();
-          }
-        }
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
-        case DIGITOS:
-          ;
-          break;
-        default:
-          jj_la1[17] = jj_gen;
-          break label_12;
-        }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case VARIAVEL:
+        jj_consume_token(VARIAVEL);
+        break;
+      case DIGITOS:
+        jj_consume_token(DIGITOS);
+        break;
+      case DIGITOS_FLUTUANTE:
+        jj_consume_token(DIGITOS_FLUTUANTE);
+        break;
+      case DIGITOS_SIGNED:
+        jj_consume_token(DIGITOS_SIGNED);
+        break;
+      default:
+        jj_la1[9] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      jj_consume_token(OP_ARIT);
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case VARIAVEL:
+        jj_consume_token(VARIAVEL);
+        break;
+      case DIGITOS:
+        jj_consume_token(DIGITOS);
+        break;
+      case DIGITOS_FLUTUANTE:
+        jj_consume_token(DIGITOS_FLUTUANTE);
+        break;
+      case DIGITOS_SIGNED:
+        jj_consume_token(DIGITOS_SIGNED);
+        break;
+      default:
+        jj_la1[10] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
     } finally {
       trace_return("EXP_ARITMETICA");
     }
   }
 
-////ATÉ AQUI
 //Declaração de variáveis - Ex: int var1;
   final public void DECLARACAO() throws ParseException {
     trace_call("DECLARACAO");
     try {
       jj_consume_token(TIPO);
-      VARIAVEL();
+      jj_consume_token(VARIAVEL);
       jj_consume_token(EOL);
     } finally {
       trace_return("DECLARACAO");
@@ -430,30 +340,40 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(PRINT);
       jj_consume_token(PARENTESES_A);
-      label_14:
+      label_7:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case LETRAS:
           jj_consume_token(LETRAS);
           break;
+        case DIGITOS_SIGNED:
+          jj_consume_token(DIGITOS_SIGNED);
+          break;
         case DIGITOS:
           jj_consume_token(DIGITOS);
           break;
-          VARIAVEL();
+        case DIGITOS_FLUTUANTE:
+          jj_consume_token(DIGITOS_FLUTUANTE);
+          break;
+        case VARIAVEL:
+          jj_consume_token(VARIAVEL);
           break;
         default:
-          jj_la1[18] = jj_gen;
+          jj_la1[11] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case LETRAS:
         case DIGITOS:
+        case DIGITOS_SIGNED:
+        case DIGITOS_FLUTUANTE:
+        case VARIAVEL:
           ;
           break;
         default:
-          jj_la1[19] = jj_gen;
-          break label_14;
+          jj_la1[12] = jj_gen;
+          break label_7;
         }
       }
       jj_consume_token(PARENTESES_F);
@@ -469,40 +389,17 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(GET);
       jj_consume_token(PARENTESES_A);
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case LETRAS:
-        VARIAVEL();
-        break;
-        label_15:
-        while (true) {
-          VARIAVEL();
-          label_16:
-          while (true) {
-            jj_consume_token(VIRGULA);
-            VARIAVEL();
-            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-            case VIRGULA:
-              ;
-              break;
-            default:
-              jj_la1[20] = jj_gen;
-              break label_16;
-            }
-          }
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case LETRAS:
-            ;
-            break;
-          default:
-            jj_la1[21] = jj_gen;
-            break label_15;
-          }
+      label_8:
+      while (true) {
+        jj_consume_token(VARIAVEL);
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case VARIAVEL:
+          ;
+          break;
+        default:
+          jj_la1[13] = jj_gen;
+          break label_8;
         }
-        break;
-      default:
-        jj_la1[22] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
       }
       jj_consume_token(PARENTESES_F);
       jj_consume_token(EOL);
@@ -516,27 +413,38 @@ public class linguagem implements linguagemConstants {
     trace_call("FUNCAO");
     try {
       jj_consume_token(TIPO);
-      VARIAVEL();
+      jj_consume_token(VARIAVEL);
       jj_consume_token(PARENTESES_A);
-      label_17:
+      label_9:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case TIPO:
+          jj_consume_token(TIPO);
+          break;
+        case VARIAVEL:
+          jj_consume_token(VARIAVEL);
+          break;
+        default:
+          jj_la1[14] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case VARIAVEL:
         case TIPO:
           ;
           break;
         default:
-          jj_la1[23] = jj_gen;
-          break label_17;
+          jj_la1[15] = jj_gen;
+          break label_9;
         }
-        jj_consume_token(TIPO);
-        VARIAVEL();
       }
       jj_consume_token(PARENTESES_F);
       jj_consume_token(CHAVES_A);
-      label_18:
+      label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -547,8 +455,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[24] = jj_gen;
-          break label_18;
+          jj_la1[16] = jj_gen;
+          break label_10;
         }
         COMANDO();
       }
@@ -564,10 +472,10 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(SWITCH);
       jj_consume_token(PARENTESES_A);
-      VARIAVEL();
+      jj_consume_token(VARIAVEL);
       jj_consume_token(PARENTESES_F);
       jj_consume_token(CHAVES_A);
-      label_19:
+      label_11:
       while (true) {
         CASE();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -575,8 +483,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[25] = jj_gen;
-          break label_19;
+          jj_la1[17] = jj_gen;
+          break label_11;
         }
       }
       PADRAO_SWITCH();
@@ -595,7 +503,7 @@ public class linguagem implements linguagemConstants {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case LETRAS:
       case DIGITOS:
-        label_20:
+        label_12:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case LETRAS:
@@ -605,7 +513,7 @@ public class linguagem implements linguagemConstants {
             jj_consume_token(DIGITOS);
             break;
           default:
-            jj_la1[26] = jj_gen;
+            jj_la1[18] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
@@ -615,25 +523,25 @@ public class linguagem implements linguagemConstants {
             ;
             break;
           default:
-            jj_la1[27] = jj_gen;
-            break label_20;
+            jj_la1[19] = jj_gen;
+            break label_12;
           }
         }
         break;
-        VARIAVEL();
+      case VARIAVEL:
+        jj_consume_token(VARIAVEL);
         break;
       default:
-        jj_la1[28] = jj_gen;
+        jj_la1[20] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       jj_consume_token(PARENTESES_F);
       jj_consume_token(EOL);
-      label_21:
+      label_13:
       while (true) {
-        COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -644,9 +552,10 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[29] = jj_gen;
-          break label_21;
+          jj_la1[21] = jj_gen;
+          break label_13;
         }
+        COMANDO();
       }
       jj_consume_token(BREAK);
       jj_consume_token(EOL);
@@ -660,11 +569,10 @@ public class linguagem implements linguagemConstants {
     trace_call("PADRAO_SWITCH");
     try {
       jj_consume_token(PADRAO);
-      label_22:
+      label_14:
       while (true) {
-        COMANDO();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -675,9 +583,10 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[30] = jj_gen;
-          break label_22;
+          jj_la1[22] = jj_gen;
+          break label_14;
         }
+        COMANDO();
       }
     } finally {
       trace_return("PADRAO_SWITCH");
@@ -690,10 +599,10 @@ public class linguagem implements linguagemConstants {
     try {
       jj_consume_token(MAIN);
       jj_consume_token(CHAVES_A);
-      label_23:
+      label_15:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case LETRAS:
+        case VARIAVEL:
         case TIPO:
         case FOR:
         case WHILE:
@@ -704,8 +613,8 @@ public class linguagem implements linguagemConstants {
           ;
           break;
         default:
-          jj_la1[31] = jj_gen;
-          break label_23;
+          jj_la1[23] = jj_gen;
+          break label_15;
         }
         COMANDO();
       }
@@ -734,18 +643,23 @@ public class linguagem implements linguagemConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[32];
+  final private int[] jj_la1 = new int[24];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
+  static private int[] jj_la1_2;
   static {
       jj_la1_init_0();
       jj_la1_init_1();
+      jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x400,0x400,0x400,0x400,0x600,0x600,0x400200,0x400200,0x400200,0x400200,0x400200,0x400,0x400200,0x200,0x600,0x800,0x600,0x600,0x600,0x600,0x80000000,0x200,0x200,0x400000,0x400200,0x0,0x600,0x600,0x600,0x400200,0x400200,0x400200,};
+      jj_la1_0 = new int[] {0x20000000,0x20000000,0x20000000,0x20000000,0x8000000,0x20000000,0x20000000,0x3c000000,0x3c000000,0x3c000000,0x3c000000,0x3e000000,0x3e000000,0x20000000,0x20000000,0x20000000,0x20000000,0x0,0x6000000,0x6000000,0x26000000,0x20000000,0x20000000,0x20000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x800,0x800,0x317,0x317,0x317,0x317,0x317,0x0,0x317,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x317,0x20,0x0,0x0,0x0,0x317,0x317,0x317,};
+      jj_la1_1 = new int[] {0x50115100,0x50115100,0x50115100,0x50115100,0x0,0x50115100,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x100,0x100,0x50115100,0x400000,0x0,0x0,0x0,0x50115100,0x50115100,0x50115100,};
+   }
+   private static void jj_la1_init_2() {
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -759,7 +673,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -773,7 +687,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -783,7 +697,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -793,7 +707,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -802,7 +716,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -811,7 +725,7 @@ public class linguagem implements linguagemConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -864,12 +778,12 @@ public class linguagem implements linguagemConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[44];
+    boolean[] la1tokens = new boolean[66];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 24; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -878,10 +792,13 @@ public class linguagem implements linguagemConstants {
           if ((jj_la1_1[i] & (1<<j)) != 0) {
             la1tokens[32+j] = true;
           }
+          if ((jj_la1_2[i] & (1<<j)) != 0) {
+            la1tokens[64+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 44; i++) {
+    for (int i = 0; i < 66; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

@@ -42,26 +42,48 @@ SKIP :
 | "\r"
 | "\r\n"
 | "/*" : COMMENT //quando encontra um /* vai para o estado comment que ignora tudo até achar um */
-| < "//" (~["\n"])* "\n" > // quando acha um // ignora tudo até achar um \n
+| < "//" (~["\n"])* "\n"> // quando acha um // ignora tudo até achar um \n
 }
 
 < COMMENT > SKIP:
 {
-	< "*/" > : DEFAULT
-| 	< ~[] >
+	< "*/"> : DEFAULT
+| 	< ~[]>
 }
 
 // END OF LINE, delimitador de linha 
 TOKEN :
 {
-	< EOL : ";" >
+	< EOL : ";">
+}
+
+//Caracteres usados na linguagem
+TOKEN :
+{
+ 	< PARENTESES_A : (<P_A>) > | < #P_A : "(">
+| 	< PARENTESES_F : (<P_F>) > | < #P_F : ")">
+|   < CHAVES_A : (<C_A>)> | < #C_A : "{">
+|	< CHAVES_F : (<C_F>)> | < #C_F : " }">
+|	< VIRGULA : (<VIR>)> | < #VIR : ",">
+|	< SUBLI : (<SUBLINHADO>)> | < #SUBLINHADO : "_">
+| 	< IGUAL : (<EQUAL>)> | < #EQUAL : "=">
+
 }
 
 /*Letras e números*/
-TOKEN [ IGNORE_CASE ] :
+TOKEN :
 {
-	< LETRAS : [ "a"-"z", "A"-"Z" ] >
-|	< DIGITOS : [ "0"-"9" ] >
+	< LETRAS : [ "a"-"z", "A"-"Z" ]>
+|	< DIGITOS : (["0" - "9"])+>
+|	< DIGITOS_SIGNED : ("-")? <DIGITOS> >
+|	< DIGITOS_FLUTUANTE : (<DIGITOS> | <DIGITOS_SIGNED>) <VIRGULA> (<DIGITOS>)+ >
+}
+
+//Variaveis aceitas
+TOKEN :
+{
+	< VARIAVEL : < LETRAS > (< LETRAS > | < DIGITOS > | < SUBLI >)* >
+	
 }
 
 /*Operadores Aritmeticos*/
@@ -69,15 +91,15 @@ TOKEN :
 {
   < OP_ARIT :
     (
-      < MAIS >
-    | < MENOS >
-    | < MULTIPLICACAO >
-    | < DIVISAO >
+      < MAIS>
+    | < MENOS>
+    | < MULTIPLICACAO>
+    | < DIVISAO>
     ) >
-|	< #MAIS : "+" >
-|	< #MENOS : "-" >
-|	< #MULTIPLICACAO : "*" >
-|	< #DIVISAO : "/" >
+|	< #MAIS : "+">
+|	< #MENOS : "-">
+|	< #MULTIPLICACAO : "*">
+|	< #DIVISAO : "/">
 }
 
 /*Operadores Relacionais*/
@@ -85,21 +107,15 @@ TOKEN :
 {
   < OP_REL :
     (
-      < MAIOR >
-    | < MENOR >
-    | < IGUALDADE >
-    | < DIFERENTE >
+      < MAIOR>
+    | < MENOR>
+    | < IGUALDADE>
+    | < DIFERENTE>
     ) >
-|	< #MAIOR : ">" >
-|	< #MENOR : "<" >
-|	< #IGUALDADE : "==" >
-|	< #DIFERENTE : "!=" >
-}
-
-//Igual
-TOKEN :
-{
-	< IGUAL : "=" >
+|	< #MAIOR : ">">
+|	< #MENOR : "<">
+|	< #IGUALDADE : "==">
+|	< #DIFERENTE : "!=">
 }
 
 //Tipos de dados
@@ -107,76 +123,50 @@ TOKEN :
 {
   < TIPO :
     (
-      < INT >
-    | < STRING >
-    | < FLOAT >
-    | < VOID >
+      < INT>
+    | < STRING>
+    | < FLOAT>
     ) >
-|	< #INT : "inteiro" >
-|	< #STRING : "texto" >
-|	< #FLOAT : "flutuante" >
-|	< #VOID : "vazio" >
-}
-
-//Caracteres usados na linguagem
-TOKEN :
-{
-	< PARENTESES_A : "(" >
-|	< PARENTESES_F : ")" >
-|	< CHAVES_A : "{" >
-|	< CHAVES_F : "}" >
-|	< VIRGULA : "," >
+|	< #INT : "inteiro">
+|	< #STRING : "texto">
+|	< #FLOAT : "flutuante">
 }
 
 //Repeticao
 TOKEN :
 {
-	< FOR : "para" >
-|	< WHILE : "enquanto" >
+  	< FOR : (<PARA>) > | < #PARA : "para">
+|	< WHILE : (<ENQUANTO>) > | < #ENQUANTO : "enquanto">
 }
 
 //Decisao
 TOKEN:
 {
-	< IF : "se" >
-|	< ELSE : "se nao" >
-|	< SWITCH : "switch" >
-|	< CASE : "caso" >
-|	< BREAK : "sair" >
-|	< PADRAO : "padrao" >
+	< IF : (<SE>) > | < #SE : "se">
+|	< ELSE : (<SEN>) > | < #SEN : "senao">
+|	< SWITCH : (<SW>) > | < #SW : "switch">
+|	< CASE : (<CASO>) > | < #CASO : "caso">
+|	< BREAK : (<PARAR>) > | < #PARAR : "parar">
+|	< PADRAO : (<PA>) > | < #PA : "padrao">
 }
 
 //Saida e Entrada de dados
 TOKEN:
 {
- 	< PRINT : "mostrar">
-|	< GET : "obter" >
+ 	< PRINT : (< MOSTRAR>) > | < #MOSTRAR : "mostrar">
+|	< GET : (< OBTER>) > | < #OBTER : "obter">
 }
 
 //Main
 TOKEN:
 {
-	< MAIN : "main" >
-}
-
-//Aceitando números com vírgula
-void NUMERO():
-{}
-{
-	< SEM_SINAL 
-}
-
-//Variaveis aceitas
-void VARIAVEL():
-{}
-{
-	< LETRAS >(< LETRAS >| < DIGITOS >| "_")*
+	< MAIN : (< PRINCIPAL>) > | < #PRINCIPAL : "main">
 }
 
 void COMANDO() :
 {}
 {
-	(WHILE() | ATRIBUICAO() | IF() | FOR() | SWITCH() | FUNCAO() | PRINT() | GET() | DECLARACAO())+
+	(WHILE() | ATRIBUICAO() | IF() | FOR() | SWITCH() | FUNCAO() | PRINT() | GET() | DECLARACAO())
 }
 
 //Repeticao enquanto
@@ -205,77 +195,77 @@ void ELSE() :
 void FOR():
 {}
 {
-  <FOR> <PARENTESES_A> (<DIGITOS>)+ <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
+	<FOR> <PARENTESES_A> (<DIGITOS_SIGNED>)+ <PARENTESES_F> <CHAVES_A> (COMANDO())+ <CHAVES_F>
 }
 
 //Atribuir valor a uma variável
 void ATRIBUICAO() :
 {}
 {
-	(VARIAVEL()<IGUAL>EXP_ARITMETICA()<EOL>)+
+	(<VARIAVEL> <IGUAL> EXP_ARITMETICA() <EOL>)+
 }
 
 //Verificação booleana
 void EXP_BOOL() :
 {}
 {
-	EXP_ARITMETICA() <OP_REL> EXP_ARITMETICA()
+	(<VARIAVEL> | <DIGITOS> | <DIGITOS_FLUTUANTE> | <DIGITOS_SIGNED>) <OP_REL> (<VARIAVEL> | <DIGITOS> | <DIGITOS_FLUTUANTE> | <DIGITOS_SIGNED>)
 }
 
 //Operacoes aritmeticas
 void EXP_ARITMETICA() :
 {}
 {
-	((NUMERO()|VARIAVEL()) (<OP_ARIT> (NUMERO()|VARIAVEL()))*)+
+	(<VARIAVEL> | <DIGITOS> | <DIGITOS_FLUTUANTE> | <DIGITOS_SIGNED>) <OP_ARIT> (<VARIAVEL> | <DIGITOS> | <DIGITOS_FLUTUANTE> | <DIGITOS_SIGNED>)
 }
 
 //Declaração de variáveis - Ex: int var1;
 void DECLARACAO() :
 {}
 {
-	<TIPO> VARIAVEL() <EOL>
+	<TIPO> <VARIAVEL> <EOL>
 }
 
 //Saída de Dados
 void PRINT() :
 {}
 {
-	<PRINT> <PARENTESES_A> ( <LETRAS> | <DIGITOS> | VARIAVEL() )+ <PARENTESES_F> <EOL>
+	<PRINT> <PARENTESES_A> ( <LETRAS> | <DIGITOS_SIGNED > | < DIGITOS > | < DIGITOS_FLUTUANTE > | <VARIAVEL> )+ <PARENTESES_F> <EOL>
 }
 
 //Entrada de Dados
 void GET() :
 {}
 {
-	<GET> <PARENTESES_A> (VARIAVEL() | (VARIAVEL() (<VIRGULA> VARIAVEL())+)+) <PARENTESES_F> <EOL>
+	<GET> <PARENTESES_A> ( <VARIAVEL> )+ <PARENTESES_F> <EOL>
 }
 
 //Declaração de Função
 void FUNCAO() :
 {}
 {
-	<TIPO> VARIAVEL() <PARENTESES_A> ( <TIPO> VARIAVEL() )* <PARENTESES_F> <CHAVES_A> (COMANDO())* <CHAVES_F>
+	<TIPO> <VARIAVEL> <PARENTESES_A> ( <TIPO> | <VARIAVEL> )+ <PARENTESES_F> <CHAVES_A> (COMANDO())* <CHAVES_F>
 }
 
 //Switch
 void SWITCH() :
 {}
 {
-	<SWITCH> <PARENTESES_A> VARIAVEL() <PARENTESES_F> <CHAVES_A> (CASE())+ PADRAO_SWITCH() <CHAVES_F>
+	<SWITCH> <PARENTESES_A> <VARIAVEL> <PARENTESES_F> <CHAVES_A> (CASE())+ PADRAO_SWITCH() <CHAVES_F>
 }
 
 //Case
 void CASE() :
 {}
 {
-	<CASE> <PARENTESES_A> (( <LETRAS> | <DIGITOS> )+ | VARIAVEL() ) <PARENTESES_F> <EOL> (COMANDO())+ <BREAK> <EOL>
+	<CASE> <PARENTESES_A> (( <LETRAS> | <DIGITOS> )+ | <VARIAVEL> ) <PARENTESES_F> <EOL> (COMANDO())* <BREAK> <EOL>
 }
 
 //Padrao do switch
 void PADRAO_SWITCH():
 {}
 {
-	<PADRAO> (COMANDO())+
+	<PADRAO> (COMANDO())*
 }
 
 //Funcao principal
@@ -287,6 +277,5 @@ void MAIN() :
 void Start() :
 {}
 {
-	MAIN()< EOF >
-}
-
+	MAIN() < EOF >
+} 

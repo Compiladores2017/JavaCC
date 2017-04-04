@@ -9,78 +9,122 @@ public interface linguagemConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int EOL = 8;
+  int EOL = 10;
   /** RegularExpression Id. */
-  int LETRAS = 9;
+  int PARENTESES_A = 11;
   /** RegularExpression Id. */
-  int DIGITOS = 10;
+  int P_A = 12;
   /** RegularExpression Id. */
-  int OP_ARIT = 11;
+  int PARENTESES_F = 13;
   /** RegularExpression Id. */
-  int MAIS = 12;
+  int P_F = 14;
   /** RegularExpression Id. */
-  int MENOS = 13;
+  int CHAVES_A = 15;
   /** RegularExpression Id. */
-  int MULTIPLICACAO = 14;
+  int C_A = 16;
   /** RegularExpression Id. */
-  int DIVISAO = 15;
+  int CHAVES_F = 17;
   /** RegularExpression Id. */
-  int OP_REL = 16;
+  int C_F = 18;
   /** RegularExpression Id. */
-  int MAIOR = 17;
+  int VIRGULA = 19;
   /** RegularExpression Id. */
-  int MENOR = 18;
+  int VIR = 20;
   /** RegularExpression Id. */
-  int IGUALDADE = 19;
+  int SUBLI = 21;
   /** RegularExpression Id. */
-  int DIFERENTE = 20;
+  int SUBLINHADO = 22;
   /** RegularExpression Id. */
-  int IGUAL = 21;
+  int IGUAL = 23;
   /** RegularExpression Id. */
-  int TIPO = 22;
+  int EQUAL = 24;
   /** RegularExpression Id. */
-  int INT = 23;
+  int LETRAS = 25;
   /** RegularExpression Id. */
-  int STRING = 24;
+  int DIGITOS = 26;
   /** RegularExpression Id. */
-  int FLOAT = 25;
+  int DIGITOS_SIGNED = 27;
   /** RegularExpression Id. */
-  int VOID = 26;
+  int DIGITOS_FLUTUANTE = 28;
   /** RegularExpression Id. */
-  int PARENTESES_A = 27;
+  int VARIAVEL = 29;
   /** RegularExpression Id. */
-  int PARENTESES_F = 28;
+  int OP_ARIT = 30;
   /** RegularExpression Id. */
-  int CHAVES_A = 29;
+  int MAIS = 31;
   /** RegularExpression Id. */
-  int CHAVES_F = 30;
+  int MENOS = 32;
   /** RegularExpression Id. */
-  int VIRGULA = 31;
+  int MULTIPLICACAO = 33;
   /** RegularExpression Id. */
-  int FOR = 32;
+  int DIVISAO = 34;
   /** RegularExpression Id. */
-  int WHILE = 33;
+  int OP_REL = 35;
   /** RegularExpression Id. */
-  int IF = 34;
+  int MAIOR = 36;
   /** RegularExpression Id. */
-  int ELSE = 35;
+  int MENOR = 37;
   /** RegularExpression Id. */
-  int SWITCH = 36;
+  int IGUALDADE = 38;
   /** RegularExpression Id. */
-  int CASE = 37;
+  int DIFERENTE = 39;
   /** RegularExpression Id. */
-  int BREAK = 38;
+  int TIPO = 40;
   /** RegularExpression Id. */
-  int PADRAO = 39;
+  int INT = 41;
   /** RegularExpression Id. */
-  int PRINT = 40;
+  int STRING = 42;
   /** RegularExpression Id. */
-  int GET = 41;
+  int FLOAT = 43;
   /** RegularExpression Id. */
-  int MAIN = 42;
+  int FOR = 44;
+  /** RegularExpression Id. */
+  int PARA = 45;
+  /** RegularExpression Id. */
+  int WHILE = 46;
+  /** RegularExpression Id. */
+  int ENQUANTO = 47;
+  /** RegularExpression Id. */
+  int IF = 48;
+  /** RegularExpression Id. */
+  int SE = 49;
+  /** RegularExpression Id. */
+  int ELSE = 50;
+  /** RegularExpression Id. */
+  int SEN = 51;
+  /** RegularExpression Id. */
+  int SWITCH = 52;
+  /** RegularExpression Id. */
+  int SW = 53;
+  /** RegularExpression Id. */
+  int CASE = 54;
+  /** RegularExpression Id. */
+  int CASO = 55;
+  /** RegularExpression Id. */
+  int BREAK = 56;
+  /** RegularExpression Id. */
+  int PARAR = 57;
+  /** RegularExpression Id. */
+  int PADRAO = 58;
+  /** RegularExpression Id. */
+  int PA = 59;
+  /** RegularExpression Id. */
+  int PRINT = 60;
+  /** RegularExpression Id. */
+  int MOSTRAR = 61;
+  /** RegularExpression Id. */
+  int GET = 62;
+  /** RegularExpression Id. */
+  int OBTER = 63;
+  /** RegularExpression Id. */
+  int MAIN = 64;
+  /** RegularExpression Id. */
+  int PRINCIPAL = 65;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int COMMENT = 1;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -90,11 +134,30 @@ public interface linguagemConstants {
     "\"\\n\"",
     "\"\\r\"",
     "\"\\r\\n\"",
-    "<token of kind 6>",
+    "\"/*\"",
     "<token of kind 7>",
+    "\"*/\"",
+    "<token of kind 9>",
     "\";\"",
+    "<PARENTESES_A>",
+    "\"(\"",
+    "<PARENTESES_F>",
+    "\")\"",
+    "<CHAVES_A>",
+    "\"{\"",
+    "<CHAVES_F>",
+    "\" }\"",
+    "<VIRGULA>",
+    "\",\"",
+    "<SUBLI>",
+    "\"_\"",
+    "<IGUAL>",
+    "\"=\"",
     "<LETRAS>",
     "<DIGITOS>",
+    "<DIGITOS_SIGNED>",
+    "<DIGITOS_FLUTUANTE>",
+    "<VARIAVEL>",
     "<OP_ARIT>",
     "\"+\"",
     "\"-\"",
@@ -105,29 +168,32 @@ public interface linguagemConstants {
     "\"<\"",
     "\"==\"",
     "\"!=\"",
-    "\"=\"",
     "<TIPO>",
     "\"inteiro\"",
     "\"texto\"",
     "\"flutuante\"",
-    "\"vazio\"",
-    "\"(\"",
-    "\")\"",
-    "\"{\"",
-    "\"}\"",
-    "\",\"",
+    "<FOR>",
     "\"para\"",
+    "<WHILE>",
     "\"enquanto\"",
+    "<IF>",
     "\"se\"",
-    "\"se nao\"",
+    "<ELSE>",
+    "\"senao\"",
+    "<SWITCH>",
     "\"switch\"",
+    "<CASE>",
     "\"caso\"",
-    "\"sair\"",
+    "<BREAK>",
+    "\"parar\"",
+    "<PADRAO>",
     "\"padrao\"",
+    "<PRINT>",
     "\"mostrar\"",
+    "<GET>",
     "\"obter\"",
+    "<MAIN>",
     "\"main\"",
-    "\"_\"",
   };
 
 }
