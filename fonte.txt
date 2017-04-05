@@ -1,2 +1,54 @@
 main {
+
+	//Comentário em linha
+
+	/* Comentário em bloco */
+	
+	//Declaração de variável
+	inteiro _variavel1;
+	texto _variavel2;
+	
+	//Atribuição de valores para a variável
+	_atribuir = 5;
+	
+	// até aqui reconhece
+	
+	//Estrutura if else
+	se (5>2) {
+		_var1 = 10;
+	} se nao {
+		_var1 = 5;
+	}
+	
+	//Estrutura for
+	para(5) {
+		_var1 = 1;
+	}
+	
+	//Estrutura while
+	enquanto(2<10) {
+		_var1 = 1;
+	}
+	
+	//Entrada de dados
+	obter(_var1);
+	
+	//Saída de dados
+	mostrar(_var1);
+	
+	//Switch case
+	switch (_var1) {
+		caso (1);
+			_var1=1;
+			sair;
+		caso (2);
+			_var1=2;
+			sair;
+		padrao;
+			_var1=0;
+	}
+	
+	
+	
 }
+//Final do programa

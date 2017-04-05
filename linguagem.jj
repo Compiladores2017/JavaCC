@@ -3,6 +3,7 @@ options
   static = false;
   DEBUG_PARSER = true;
   DEBUG_TOKEN_MANAGER = true;
+  LOOKAHEAD = 50;
 }
 
 PARSER_BEGIN(linguagem)
@@ -63,7 +64,7 @@ TOKEN :
  	< PARENTESES_A : (<P_A>) > | < #P_A : "(">
 | 	< PARENTESES_F : (<P_F>) > | < #P_F : ")">
 |   < CHAVES_A : (<C_A>)> | < #C_A : "{">
-|	< CHAVES_F : (<C_F>)> | < #C_F : " }">
+|	< CHAVES_F : (<C_F>)> | < #C_F : "}">
 |	< VIRGULA : (<VIR>)> | < #VIR : ",">
 |	< SUBLI : (<SUBLINHADO>)> | < #SUBLINHADO : "_">
 | 	< IGUAL : (<EQUAL>)> | < #EQUAL : "=">
@@ -82,7 +83,7 @@ TOKEN :
 //Variaveis aceitas
 TOKEN :
 {
-	< VARIAVEL : < LETRAS > (< LETRAS > | < DIGITOS > | < SUBLI >)* >
+	< VARIAVEL : < SUBLI > (< LETRAS > | < DIGITOS >)+ >
 	
 }
 
@@ -161,6 +162,13 @@ TOKEN:
 TOKEN:
 {
 	< MAIN : (< PRINCIPAL>) > | < #PRINCIPAL : "main">
+}
+
+//Funcao principal
+void MAIN() :
+{}
+{
+	<MAIN> <CHAVES_A> (COMANDO())* <CHAVES_F>
 }
 
 void COMANDO() :
@@ -268,12 +276,6 @@ void PADRAO_SWITCH():
 	<PADRAO> (COMANDO())*
 }
 
-//Funcao principal
-void MAIN() :
-{}
-{
-	< MAIN > <CHAVES_A> (COMANDO())* <CHAVES_F>
-}
 void Start() :
 {}
 {

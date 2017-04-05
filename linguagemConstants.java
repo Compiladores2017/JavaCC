@@ -146,7 +146,7 @@ public interface linguagemConstants {
     "<CHAVES_A>",
     "\"{\"",
     "<CHAVES_F>",
-    "\" }\"",
+    "\"}\"",
     "<VIRGULA>",
     "\",\"",
     "<SUBLI>",
